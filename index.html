@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>لوحة التاجر | منادِم</title>
+  <meta name="theme-color" content="#171614" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --space-1:0.25rem; --space-2:0.5rem; --space-3:0.75rem; --space-4:1rem; --space-5:1.25rem; --space-6:1.5rem; --space-8:2rem; --space-10:2.5rem; --space-12:3rem; --space-16:4rem;
+      --color-bg:#f7f6f2; --color-surface:#f9f8f5; --color-surface-2:#fbfbf9; --color-surface-offset:#f3f0ec; --color-surface-offset-2:#edeae5; --color-surface-dynamic:#e6e4df;
+      --color-divider:#dcd9d5; --color-border:#d4d1ca; --color-text:#28251d; --color-text-muted:#7a7974; --color-text-faint:#bab9b4; --color-text-inverse:#f9f8f4;
+      --color-primary:#01696f; --color-primary-hover:#0c4e54; --color-primary-active:#0f3638; --color-primary-highlight:#cedcd8;
+      --color-warning:#964219; --color-warning-highlight:#ddcfc6; --color-error:#a12c7b; --color-error-highlight:#e0ced7; --color-success:#437a22; --color-success-highlight:#d4dfcc; --color-blue:#006494; --color-blue-highlight:#c6d8e4;
+      --radius-sm:0.375rem; --radius-md:0.5rem; --radius-lg:0.75rem; --radius-xl:1rem; --radius-full:9999px;
+      --transition-interactive:180ms cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow-sm:0 1px 2px oklch(0.2 0.01 80 / 0.06); --shadow-md:0 4px 12px oklch(0.2 0.01 80 / 0.08); --shadow-lg:0 12px 32px oklch(0.2 0.01 80 / 0.12);
+      --font-body:'Satoshi','Inter',sans-serif; --font-display:'General Sans','Inter',sans-serif;
+    }
+    [data-theme="dark"] {
+      --color-bg:#171614; --color-surface:#1c1b19; --color-surface-2:#201f1d; --color-surface-offset:#1d1c1a; --color-surface-offset-2:#22211f; --color-surface-dynamic:#2d2c2a;
+      --color-divider:#262523; --color-border:#393836; --color-text:#cdccca; --color-text-muted:#9b9a97; --color-text-faint:#6c6b68; --color-text-inverse:#2b2a28;
+      --color-primary:#4f98a3; --color-primary-hover:#227f8b; --color-primary-active:#1a626b; --color-primary-highlight:#313b3b;
+      --color-warning:#bb653b; --color-warning-highlight:#564942; --color-error:#d163a7; --color-error-highlight:#4c3d46; --color-success:#6daa45; --color-success-highlight:#3a4435; --color-blue:#5591c7; --color-blue-highlight:#3a4550;
+      --shadow-sm:0 1px 2px oklch(0 0 0 / 0.2); --shadow-md:0 4px 12px oklch(0 0 0 / 0.3); --shadow-lg:0 12px 32px oklch(0 0 0 / 0.4);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{-moz-text-size-adjust:none;-webkit-text-size-adjust:none;text-size-adjust:none;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+    body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);line-height:1.6;color:var(--color-text);background:
+      radial-gradient(circle at top right, oklch(from var(--color-primary) l c h / 0.16), transparent 26%),
+      radial-gradient(circle at bottom left, oklch(from var(--color-blue) l c h / 0.14), transparent 24%),
+      var(--color-bg);
+      overflow-x:hidden}
+    button,input{font:inherit;color:inherit}
+    button{cursor:pointer;border:none;background:none}
+    .shell{min-height:100dvh;display:grid;grid-template-rows:auto 1fr auto;gap:var(--space-4);padding:env(safe-area-inset-top) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom))}
+    .topbar,.glass,.nav-card,.action-card,.list-card,.pill,.bottom-nav{background:oklch(from var(--color-surface) l c h / 0.88);backdrop-filter:blur(18px);border:1px solid oklch(from var(--color-text) l c h / 0.1);box-shadow:var(--shadow-md)}
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:var(--space-4);border-radius:var(--radius-xl);position:sticky;top:var(--space-4);z-index:10}
+    .brand{display:flex;align-items:center;gap:var(--space-3)}
+    .logo{width:2.8rem;height:2.8rem;border-radius:0.9rem;display:grid;place-items:center;background:linear-gradient(135deg,var(--color-primary),var(--color-blue));color:#fff;box-shadow:var(--shadow-lg)}
+    .brand-copy h1{font-family:var(--font-display);font-size:var(--text-lg);line-height:1.1}
+    .brand-copy p{font-size:var(--text-xs);color:var(--color-text-muted)}
+    .icon-btn{width:2.8rem;height:2.8rem;border-radius:var(--radius-full);display:grid;place-items:center;background:var(--color-surface-offset);border:1px solid oklch(from var(--color-text) l c h / 0.08);transition:transform var(--transition-interactive),background var(--transition-interactive)}
+    .icon-btn:active{transform:scale(.97)}
+    .main{display:grid;gap:var(--space-4);align-content:start}
+    .hero{padding:var(--space-5);border-radius:1.5rem;background:
+      linear-gradient(160deg, oklch(from var(--color-primary) l c h / 0.22), transparent 55%),
+      linear-gradient(340deg, oklch(from var(--color-blue) l c h / 0.12), transparent 48%),
+      var(--color-surface-2);
+      border:1px solid oklch(from var(--color-primary) l c h / 0.16);box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+    .hero::after{content:"";position:absolute;inset:auto -3rem -4rem auto;width:11rem;height:11rem;border-radius:50%;background:oklch(from var(--color-primary) l c h / 0.1);filter:blur(8px)}
+    .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--space-4);margin-bottom:var(--space-4)}
+    .eyebrow{display:inline-flex;align-items:center;gap:var(--space-2);padding:0.45rem 0.8rem;border-radius:var(--radius-full);font-size:var(--text-xs);background:var(--color-primary-highlight);color:var(--color-primary);margin-bottom:var(--space-3)}
+    .hero h2{font-family:var(--font-display);font-size:var(--text-xl);line-height:1.08;max-width:18ch;margin-bottom:var(--space-3)}
+    .hero p{font-size:var(--text-sm);color:var(--color-text-muted);max-width:42ch}
+    .status-stack{display:grid;gap:var(--space-2);min-width:8rem}
+    .status-chip{padding:0.6rem 0.9rem;border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:700;display:flex;align-items:center;justify-content:center;gap:0.5rem}
+    .status-live{background:var(--color-success-highlight);color:var(--color-success)} .status-load{background:var(--color-warning-highlight);color:var(--color-warning)}
+    .hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);margin-top:var(--space-5)}
+    .primary-btn,.secondary-btn{min-height:3rem;border-radius:0.95rem;padding:0 var(--space-4);font-size:var(--text-sm);font-weight:700;transition:transform var(--transition-interactive),background var(--transition-interactive),border-color var(--transition-interactive)}
+    .primary-btn{background:var(--color-primary);color:var(--color-text-inverse)} .primary-btn:active{transform:translateY(1px)} .secondary-btn{background:var(--color-surface-offset);border:1px solid oklch(from var(--color-text) l c h / 0.09)}
+    .section-head{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);margin-top:var(--space-2)}
+    .section-head h3{font-size:var(--text-lg);font-weight:800} .section-head span{font-size:var(--text-xs);color:var(--color-text-muted)}
+    .kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+    .glass{padding:var(--space-4);border-radius:1.15rem;position:relative;overflow:hidden}
+    .kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4)}
+    .kpi-label{font-size:var(--text-xs);color:var(--color-text-muted)} .kpi-value{font-size:var(--text-xl);font-weight:900;font-variant-numeric:tabular-nums lining-nums;line-height:1}.kpi-foot{font-size:var(--text-xs);color:var(--color-text-muted)}
+    .spark{display:flex;align-items:end;gap:0.23rem;height:2.5rem}.spark span{flex:1;border-radius:999px;background:linear-gradient(180deg,var(--color-primary),transparent 180%)}
+    .quick-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+    .action-card,.nav-card{padding:var(--space-4);border-radius:1.05rem;text-align:right;transition:transform var(--transition-interactive),border-color var(--transition-interactive)}
+    .action-card:active,.nav-card:active{transform:translateY(1px)} .action-icon{width:2.6rem;height:2.6rem;border-radius:0.9rem;display:grid;place-items:center;margin-bottom:var(--space-3)}
+    .tone-primary{background:var(--color-primary-highlight);color:var(--color-primary)} .tone-success{background:var(--color-success-highlight);color:var(--color-success)} .tone-warning{background:var(--color-warning-highlight);color:var(--color-warning)} .tone-blue{background:var(--color-blue-highlight);color:var(--color-blue)}
+    .action-card h4,.nav-card h4{font-size:var(--text-base);font-weight:800;margin-bottom:0.3rem} .action-card p,.nav-card p{font-size:var(--text-xs);color:var(--color-text-muted);max-width:22ch}
+    .merchant-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+    .list-wrap{display:grid;gap:var(--space-3)} .list-card{padding:var(--space-4);border-radius:1rem;display:grid;gap:var(--space-3)}
+    .list-head{display:flex;justify-content:space-between;gap:var(--space-3);align-items:flex-start}.title-stack h4{font-size:var(--text-base);font-weight:800}.title-stack p{font-size:var(--text-xs);color:var(--color-text-muted)}
+    .pill{padding:0.45rem 0.75rem;border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:700;box-shadow:none}.pill-wait{color:var(--color-warning);background:var(--color-warning-highlight)}.pill-live{color:var(--color-success);background:var(--color-success-highlight)}.pill-info{color:var(--color-blue);background:var(--color-blue-highlight)}
+    .list-meta{display:flex;gap:var(--space-2);flex-wrap:wrap}.meta-chip{padding:0.45rem 0.7rem;border-radius:var(--radius-full);font-size:var(--text-xs);background:var(--color-surface-offset);border:1px solid oklch(from var(--color-text) l c h / 0.08)}
+    .mini-actions{display:flex;gap:var(--space-2)} .mini-btn{flex:1;min-height:2.75rem;border-radius:0.85rem;padding:0 var(--space-3);font-size:var(--text-sm);font-weight:700;background:var(--color-surface-offset);border:1px solid oklch(from var(--color-text) l c h / 0.08)} .mini-btn.primary{background:var(--color-primary);color:var(--color-text-inverse);border-color:transparent}
+    .bottom-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-2);padding:var(--space-3);border-radius:1.25rem;position:sticky;bottom:var(--space-3)}
+    .nav-item{padding:var(--space-2);border-radius:0.95rem;display:grid;justify-items:center;gap:0.4rem;color:var(--color-text-muted)} .nav-item.active{background:var(--color-primary-highlight);color:var(--color-primary)} .nav-item span{font-size:11px;font-weight:700}
+    .screen{display:none;gap:var(--space-4)} .screen.active{display:grid}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)} .toolbar h3{font-size:var(--text-lg);font-weight:800}.toolbar p{font-size:var(--text-xs);color:var(--color-text-muted)}
+    .empty{padding:var(--space-8) var(--space-4);text-align:center;color:var(--color-text-muted);background:var(--color-surface);border-radius:1rem;border:1px dashed oklch(from var(--color-text) l c h / 0.12)}
+    .badge-row{display:flex;gap:var(--space-2);flex-wrap:wrap}
+    @media (min-width: 768px){.shell{max-width:860px;margin:0 auto;padding-inline:var(--space-6)} .kpis{grid-template-columns:repeat(4,minmax(0,1fr))} .quick-actions{grid-template-columns:repeat(4,minmax(0,1fr))} .merchant-grid{grid-template-columns:repeat(4,minmax(0,1fr))} .hero-actions{grid-template-columns:max-content max-content;justify-content:start} .status-stack{min-width:12rem}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 19V8.5L14 4L22 8.5V19L14 24L6 19Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+            <path d="M10 11.5L14 9.2L18 11.5V16.3L14 18.6L10 16.3V11.5Z" fill="currentColor" opacity=".88"/>
+          </svg>
+        </div>
+        <div class="brand-copy">
+          <h1>منادِم للتجار</h1>
+          <p id="merchantName">لوحة تحكم فورية داخل تيليجرام</p>
+        </div>
+      </div>
+      <button class="icon-btn" id="themeToggle" aria-label="تبديل المظهر">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </header>
+
+    <main class="main">
+      <section id="screen-home" class="screen active">
+        <article class="hero">
+          <div class="hero-top">
+            <div>
+              <div class="eyebrow">⚡ تشغيل مباشر · Merchant Mini App</div>
+              <h2>إدارة الفرع، الحجوزات، والتنبيهات من واجهة واحدة.</h2>
+              <p>تجربة سريعة، أنيقة، ومهيأة لتتحول لاحقًا إلى لوحة تشغيل حية متصلة ببيانات منادِم الحقيقية.</p>
+            </div>
+            <div class="status-stack">
+              <div class="status-chip status-live">● الفرع متصل</div>
+              <div class="status-chip status-load">الانتظار متوسط</div>
+            </div>
+          </div>
+          <div class="hero-actions">
+            <button class="primary-btn" data-screen="reservations">عرض الحجوزات</button>
+            <button class="secondary-btn" data-screen="alerts">إرسال تنبيه</button>
+          </div>
+        </article>
+
+        <div class="section-head"><h3>نظرة سريعة</h3><span>آخر تحديث الآن</span></div>
+        <section class="kpis">
+          <article class="glass">
+            <div class="kpi-top"><span class="kpi-label">المنتظرون الآن</span><span>⏳</span></div>
+            <div class="kpi-value">18</div>
+            <div class="kpi-foot">+3 منذ 10 دقائق</div>
+          </article>
+          <article class="glass">
+            <div class="kpi-top"><span class="kpi-label">الخدمة النشطة</span><span>🟢</span></div>
+            <div class="kpi-value">07</div>
+            <div class="kpi-foot">شبابيك تعمل الآن</div>
+          </article>
+          <article class="glass">
+            <div class="kpi-top"><span class="kpi-label">متوسط الانتظار</span><span>📈</span></div>
+            <div class="kpi-value">12د</div>
+            <div class="kpi-foot">أفضل من أمس</div>
+          </article>
+          <article class="glass">
+            <div class="kpi-top"><span class="kpi-label">الرضا اللحظي</span><span>⭐</span></div>
+            <div class="kpi-value">94%</div>
+            <div class="kpi-foot">استقرار ممتاز</div>
+          </article>
+        </section>
+
+        <div class="section-head"><h3>إجراءات سريعة</h3><span>مختصرة للتشغيل</span></div>
+        <section class="quick-actions">
+          <button class="action-card" data-screen="reservations">
+            <div class="action-icon tone-primary">📋</div>
+            <h4>الحجوزات</h4>
+            <p>مراجعة الصف الحالي والطلبات الجديدة.</p>
+          </button>
+          <button class="action-card" data-screen="status">
+            <div class="action-icon tone-success">🟢</div>
+            <h4>حالة الفرع</h4>
+            <p>الموظفون، الضغط، وسرعة الخدمة.</p>
+          </button>
+          <button class="action-card" data-screen="alerts">
+            <div class="action-icon tone-warning">🔔</div>
+            <h4>التنبيهات</h4>
+            <p>إرسال تنبيه تشغيلي للعملاء أو الفريق.</p>
+          </button>
+          <button class="action-card" data-screen="settings">
+            <div class="action-icon tone-blue">⚙️</div>
+            <h4>الإعدادات</h4>
+            <p>الهوية، العمل، والسياسات التشغيلية.</p>
+          </button>
+        </section>
+
+        <div class="section-head"><h3>مركز التاجر</h3><span>بطاقات جاهزة للتوسعة</span></div>
+        <section class="merchant-grid">
+          <article class="nav-card"><h4>التقارير</h4><p>ملخص يومي وسجل أداء قابل للتصدير.</p></article>
+          <article class="nav-card"><h4>العملاء</h4><p>بحث سريع، حالة عميل، وسجل المعاملات.</p></article>
+          <article class="nav-card"><h4>الموظفون</h4><p>توزيع الأدوار والحضور التشغيلي.</p></article>
+          <article class="nav-card"><h4>الفروع</h4><p>إدارة أكثر من نقطة خدمة مستقبلًا.</p></article>
+        </section>
+      </section>
+
+      <section id="screen-reservations" class="screen">
+        <div class="toolbar"><div><h3>حجوزات اليوم</h3><p>صف حي مهيأ للربط بالبيانات الحقيقية</p></div><button class="icon-btn" data-screen="home">⌂</button></div>
+        <div class="badge-row"><span class="meta-chip">الكل 18</span><span class="meta-chip">عالي الأولوية 3</span><span class="meta-chip">قيد الخدمة 7</span></div>
+        <div class="list-wrap">
+          <article class="list-card">
+            <div class="list-head"><div class="title-stack"><h4>تذكرة A-104</h4><p>عميل VIP · حجز مؤكد</p></div><span class="pill pill-live">جاهز الآن</span></div>
+            <div class="list-meta"><span class="meta-chip">منذ 4 دقائق</span><span class="meta-chip">نافذة 3</span><span class="meta-chip">خدمة سريعة</span></div>
+            <div class="mini-actions"><button class="mini-btn primary">استدعاء الآن</button><button class="mini-btn">تفاصيل</button></div>
+          </article>
+          <article class="list-card">
+            <div class="list-head"><div class="title-stack"><h4>تذكرة B-221</h4><p>حجز عادي · بحاجة لتأكيد</p></div><span class="pill pill-wait">ينتظر</span></div>
+            <div class="list-meta"><span class="meta-chip">12 دقيقة</span><span class="meta-chip">عميل جديد</span><span class="meta-chip">دفع عند الوصول</span></div>
+            <div class="mini-actions"><button class="mini-btn primary">تأكيد</button><button class="mini-btn">إلغاء</button></div>
+          </article>
+          <article class="list-card">
+            <div class="list-head"><div class="title-stack"><h4>تذكرة C-309</h4><p>حالة ازدحام · تتطلب متابعة</p></div><span class="pill pill-info">مراقبة</span></div>
+            <div class="list-meta"><span class="meta-chip">20 دقيقة</span><span class="meta-chip">فرع رئيسي</span><span class="meta-chip">تم إشعار العميل</span></div>
+            <div class="mini-actions"><button class="mini-btn primary">إرسال تحديث</button><button class="mini-btn">تحويل</button></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="screen-status" class="screen">
+        <div class="toolbar"><div><h3>الحالة الحالية</h3><p>قراءة تشغيلية سريعة للفرع</p></div><button class="icon-btn" data-screen="home">⌂</button></div>
+        <section class="kpis">
+          <article class="glass"><div class="kpi-top"><span class="kpi-label">الشبابيك</span><span>🏢</span></div><div class="kpi-value">7/8</div><div class="kpi-foot">شباك واحد متوقف</div></article>
+          <article class="glass"><div class="kpi-top"><span class="kpi-label">التدفق</span><span>🌊</span></div><div class="kpi-value">مستقر</div><div class="kpi-foot">لا اختناقات حرجة</div></article>
+          <article class="glass"><div class="kpi-top"><span class="kpi-label">الاستدعاء</span><span>📣</span></div><div class="kpi-value">42</div><div class="kpi-foot">اليوم حتى الآن</div></article>
+          <article class="glass"><div class="kpi-top"><span class="kpi-label">زمن الدورة</span><span>⏱️</span></div><div class="kpi-value">06د</div><div class="kpi-foot">ضمن الهدف</div></article>
+        </section>
+        <article class="glass">
+          <div class="section-head"><h3>نبض الفرع</h3><span>آخر 30 دقيقة</span></div>
+          <div class="spark" aria-hidden="true"><span style="height:25%"></span><span style="height:42%"></span><span style="height:38%"></span><span style="height:60%"></span><span style="height:52%"></span><span style="height:75%"></span><span style="height:54%"></span><span style="height:68%"></span><span style="height:58%"></span><span style="height:84%"></span></div>
+        </article>
+      </section>
+
+      <section id="screen-alerts" class="screen">
+        <div class="toolbar"><div><h3>التنبيهات</h3><p>رسائل تشغيلية سريعة ومباشرة</p></div><button class="icon-btn" data-screen="home">⌂</button></div>
+        <div class="quick-actions">
+          <button class="action-card"><div class="action-icon tone-warning">📢</div><h4>إشعار ازدحام</h4><p>إبلاغ العملاء بارتفاع وقت الانتظار.</p></button>
+          <button class="action-card"><div class="action-icon tone-primary">📲</div><h4>تنبيه فوري</h4><p>إرسال رسالة مباشرة للمشغلين.</p></button>
+          <button class="action-card"><div class="action-icon tone-success">✅</div><h4>استئناف الخدمة</h4><p>إعلام العملاء بعودة الخدمة للوضع الطبيعي.</p></button>
+          <button class="action-card"><div class="action-icon tone-blue">🧾</div><h4>إشعار داخلي</h4><p>مشاركة ملاحظة تشغيلية داخلية.</p></button>
+        </div>
+        <article class="empty">سيتم ربط هذا القسم لاحقًا بإرسال تنبيهات حقيقية عبر النظام وTelegram وFirebase.</article>
+      </section>
+
+      <section id="screen-settings" class="screen">
+        <div class="toolbar"><div><h3>الإعدادات</h3><p>الهوية والتشغيل والتحكم</p></div><button class="icon-btn" data-screen="home">⌂</button></div>
+        <div class="list-wrap">
+          <article class="list-card"><div class="list-head"><div class="title-stack"><h4>هوية الفرع</h4><p>اسم الفرع، الشعار، ومعلومات التواصل</p></div><span class="pill pill-info">جاهز</span></div></article>
+          <article class="list-card"><div class="list-head"><div class="title-stack"><h4>ساعات العمل</h4><p>فتح، إغلاق، وأيام العطل</p></div><span class="pill pill-live">نشط</span></div></article>
+          <article class="list-card"><div class="list-head"><div class="title-stack"><h4>سياسة التنبيهات</h4><p>متى تُرسل الرسائل ولمن</p></div><span class="pill pill-wait">مراجعة</span></div></article>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="التنقل السفلي">
+      <button class="nav-item active" data-screen="home">🏠<span>الرئيسية</span></button>
+      <button class="nav-item" data-screen="reservations">📋<span>الحجوزات</span></button>
+      <button class="nav-item" data-screen="status">🟢<span>الحالة</span></button>
+      <button class="nav-item" data-screen="settings">⚙️<span>الإعدادات</span></button>
+    </nav>
+  </div>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      tg.BackButton.hide();
+      tg.setHeaderColor('#171614');
+      tg.setBackgroundColor('#171614');
+    }
+
+    const screens = [...document.querySelectorAll('.screen')];
+    const navItems = [...document.querySelectorAll('[data-screen]')];
+    const merchantName = document.getElementById('merchantName');
+    const html = document.documentElement;
+    const themeToggle = document.getElementById('themeToggle');
+
+    function setScreen(id) {
+      screens.forEach(screen => screen.classList.toggle('active', screen.id === `screen-${id}`));
+      document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => btn.classList.toggle('active', btn.dataset.screen === id));
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+      if (tg?.BackButton) {
+        if (id === 'home') tg.BackButton.hide();
+        else {
+          tg.BackButton.show();
+          tg.BackButton.onClick(() => setScreen('home'));
+        }
+      }
+    }
+
+    navItems.forEach(item => item.addEventListener('click', () => setScreen(item.dataset.screen)));
+
+    themeToggle.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+    });
+
+    if (tg?.initDataUnsafe?.user?.first_name) {
+      merchantName.textContent = `مرحبًا ${tg.initDataUnsafe.user.first_name} · لوحة التاجر`;
+    }
+
+    if (tg?.MainButton) {
+      tg.MainButton.setText('فتح مركز الإجراءات');
+      tg.MainButton.show();
+      tg.MainButton.onClick(() => setScreen('reservations'));
+    }
+  </script>
+</body>
+</html>
