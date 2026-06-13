@@ -9,9 +9,9 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
   <style>
-    :root,[data-theme="light"]{--text-xs:clamp(.7rem,.68rem + .18vw,.8rem);--text-sm:clamp(.8rem,.76rem + .24vw,.92rem);--text-base:clamp(.92rem,.88rem + .22vw,1rem);--text-lg:clamp(1rem,.94rem + .46vw,1.18rem);--text-xl:clamp(1.2rem,1.05rem + .9vw,1.6rem);--space-1:.25rem;--space-2:.45rem;--space-3:.65rem;--space-4:.85rem;--space-5:1rem;--space-6:1.2rem;--space-8:1.6rem;--space-10:2rem;--space-12:2.5rem;--color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;--color-surface-offset:#f3f0ec;--color-divider:#dcd9d5;--color-border:#d4d1ca;--color-text:#28251d;--color-text-muted:#7a7974;--color-text-inverse:#f9f8f4;--color-primary:#01696f;--color-primary-highlight:#cedcd8;--color-warning:#964219;--color-warning-highlight:#ddcfc6;--color-success:#437a22;--color-success-highlight:#d4dfcc;--color-blue:#006494;--color-blue-highlight:#c6d8e4;--radius-sm:.35rem;--radius-md:.5rem;--radius-lg:.7rem;--radius-xl:.9rem;--radius-full:9999px;--transition-interactive:180ms cubic-bezier(0.16,1,0.3,1);--shadow-md:0 4px 12px oklch(0.2 0.01 80 / 0.08);--shadow-lg:0 12px 28px oklch(0.2 0.01 80 / 0.1);--font-body:'Satoshi','Inter',sans-serif;--font-display:'General Sans','Inter',sans-serif}
-    [data-theme="dark"]{--color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;--color-surface-offset:#1d1c1a;--color-divider:#262523;--color-border:#393836;--color-text:#cdccca;--color-text-muted:#9b9a97;--color-text-inverse:#2b2a28;--color-primary:#4f98a3;--color-primary-highlight:#313b3b;--color-warning:#bb653b;--color-warning-highlight:#564942;--color-success:#6daa45;--color-success-highlight:#3a4435;--color-blue:#5591c7;--color-blue-highlight:#3a4550;--shadow-md:0 4px 12px oklch(0 0 0 / .28);--shadow-lg:0 12px 28px oklch(0 0 0 / .36)}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);line-height:1.5;color:var(--color-text);background:radial-gradient(circle at top right,oklch(from var(--color-primary) l c h / .14),transparent 24%),radial-gradient(circle at bottom left,oklch(from var(--color-blue) l c h / .12),transparent 22%),var(--color-bg);overflow-x:hidden}button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}.shell{min-height:100dvh;display:grid;grid-template-rows:auto auto 1fr auto;gap:var(--space-3);padding:env(safe-area-inset-top) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom))}.topbar,.glass,.action-card,.list-card,.bottom-nav,.notice,.empty-state{background:oklch(from var(--color-surface) l c h / .9);backdrop-filter:blur(16px);border:1px solid oklch(from var(--color-text) l c h / .09);box-shadow:var(--shadow-md)}.topbar{display:flex;align-items:center;justify-content:space-between;padding:var(--space-3) var(--space-4);border-radius:var(--radius-xl)}.brand{display:flex;align-items:center;gap:var(--space-3)}.logo{width:2.45rem;height:2.45rem;border-radius:.85rem;display:grid;place-items:center;background:linear-gradient(135deg,var(--color-primary),var(--color-blue));color:#fff;box-shadow:var(--shadow-lg)}.brand-copy h1{font-family:var(--font-display);font-size:var(--text-lg);line-height:1.08}.brand-copy p{font-size:var(--text-xs);color:var(--color-text-muted)}.icon-btn{width:2.25rem;height:2.25rem;border-radius:var(--radius-full);display:grid;place-items:center;background:var(--color-surface-offset);border:1px solid oklch(from var(--color-text) l c h / .08)}.notice{padding:var(--space-2) var(--space-3);border-radius:var(--radius-lg);font-size:var(--text-xs)}.notice.error{border-color:oklch(from var(--color-warning) l c h / .35);color:var(--color-warning)}.notice.success{border-color:oklch(from var(--color-success) l c h / .35);color:var(--color-success)}.notice.info{border-color:oklch(from var(--color-blue) l c h / .35);color:var(--color-blue)}.main{display:grid;gap:var(--space-3);align-content:start}.hero{padding:var(--space-4);border-radius:1.15rem;background:linear-gradient(160deg,oklch(from var(--color-primary) l c h / .2),transparent 55%),linear-gradient(340deg,oklch(from var(--color-blue) l c h / .11),transparent 48%),var(--color-surface-2);border:1px solid oklch(from var(--color-primary) l c h / .14);box-shadow:var(--shadow-lg)}.eyebrow{display:inline-flex;align-items:center;gap:var(--space-2);padding:.35rem .65rem;border-radius:var(--radius-full);font-size:var(--text-xs);background:var(--color-primary-highlight);color:var(--color-primary);margin-bottom:var(--space-2)}.hero h2{font-family:var(--font-display);font-size:var(--text-xl);line-height:1.06;max-width:18ch;margin-bottom:var(--space-2)}.hero p{font-size:var(--text-xs);color:var(--color-text-muted);max-width:42ch}.hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2);margin-top:var(--space-4)}.primary-btn,.secondary-btn{min-height:2.5rem;border-radius:.8rem;padding:0 var(--space-3);font-size:var(--text-xs);font-weight:700}.primary-btn{background:var(--color-primary);color:var(--color-text-inverse)}.secondary-btn{background:var(--color-surface-offset);border:1px solid oklch(from var(--color-text) l c h / .09)}.section-head{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}.section-head h3{font-size:var(--text-base);font-weight:800}.section-head span{font-size:var(--text-xs);color:var(--color-text-muted)}.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2)}.glass{padding:var(--space-3);border-radius:.95rem}.kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-3)}.kpi-label{font-size:var(--text-xs);color:var(--color-text-muted)}.kpi-value{font-size:var(--text-lg);font-weight:900;font-variant-numeric:tabular-nums;line-height:1}.kpi-foot{font-size:11px;color:var(--color-text-muted)}.quick-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-2)}.action-card{padding:var(--space-3);border-radius:.95rem;text-align:right}.action-icon{width:2.1rem;height:2.1rem;border-radius:.75rem;display:grid;place-items:center;margin-bottom:var(--space-2);font-size:.95rem}.tone-primary{background:var(--color-primary-highlight);color:var(--color-primary)}.tone-success{background:var(--color-success-highlight);color:var(--color-success)}.tone-warning{background:var(--color-warning-highlight);color:var(--color-warning)}.tone-blue{background:var(--color-blue-highlight);color:var(--color-blue)}.action-card h4{font-size:var(--text-sm);font-weight:800;margin-bottom:.2rem}.action-card p{font-size:11px;color:var(--color-text-muted)}.screen{display:none;gap:var(--space-3)}.screen.active{display:grid}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}.toolbar h3{font-size:var(--text-base);font-weight:800}.toolbar p{font-size:11px;color:var(--color-text-muted)}.list-wrap{display:grid;gap:var(--space-2)}.list-card{padding:var(--space-3);border-radius:.95rem;display:grid;gap:var(--space-2)}.list-head{display:flex;justify-content:space-between;gap:var(--space-2);align-items:flex-start}.title-stack h4{font-size:var(--text-sm);font-weight:800}.title-stack p{font-size:11px;color:var(--color-text-muted)}.pill{padding:.35rem .6rem;border-radius:var(--radius-full);font-size:11px;font-weight:700}.pill-wait{color:var(--color-warning);background:var(--color-warning-highlight)}.pill-live{color:var(--color-success);background:var(--color-success-highlight)}.pill-info{color:var(--color-blue);background:var(--color-blue-highlight)}.list-meta{display:flex;gap:var(--space-2);flex-wrap:wrap}.meta-chip{padding:.35rem .6rem;border-radius:var(--radius-full);font-size:11px;background:var(--color-surface-offset);border:1px solid oklch(from var(--color-text) l c h / .08)}.mini-actions{display:flex;gap:var(--space-2)}.mini-btn{flex:1;min-height:2.2rem;border-radius:.75rem;padding:0 var(--space-3);font-size:11px;font-weight:700;background:var(--color-surface-offset);border:1px solid oklch(from var(--color-text) l c h / .08)}.mini-btn.primary{background:var(--color-primary);color:var(--color-text-inverse);border-color:transparent}.bottom-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-2);padding:var(--space-2);border-radius:1rem;position:sticky;bottom:var(--space-3)}.nav-item{padding:.45rem .3rem;border-radius:.8rem;display:grid;justify-items:center;gap:.3rem;color:var(--color-text-muted);min-height:42px}.nav-item.active{background:var(--color-primary-highlight);color:var(--color-primary)}.nav-item span{font-size:10px;font-weight:700}.skeleton{height:5.2rem;border-radius:.95rem;background:linear-gradient(90deg,var(--color-surface-offset) 25%,var(--color-divider) 50%,var(--color-surface-offset) 75%);background-size:200% 100%;animation:shimmer 1.4s ease-in-out infinite}.empty-state{padding:var(--space-5);border-radius:.95rem;text-align:center}.empty-state h4{margin-bottom:var(--space-2);font-size:var(--text-sm)}.empty-state p{font-size:11px;color:var(--color-text-muted);margin-inline:auto;max-width:34ch}.muted{color:var(--color-text-muted);font-size:11px}@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}@media (min-width:768px){.shell{max-width:820px;margin:0 auto;padding-inline:var(--space-5)}.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}.quick-actions{grid-template-columns:repeat(4,minmax(0,1fr))}.hero-actions{grid-template-columns:max-content max-content;justify-content:start}}
+    :root,[data-theme="light"]{--text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);--text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);--text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;--color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;--color-surface-offset:#f3f0ec;--color-divider:#dcd9d5;--color-border:#d4d1ca;--color-text:#28251d;--color-text-muted:#7a7974;--color-text-inverse:#f9f8f4;--color-primary:#01696f;--color-primary-highlight:#cedcd8;--color-warning:#964219;--color-warning-highlight:#ddcfc6;--color-success:#437a22;--color-success-highlight:#d4dfcc;--color-blue:#006494;--color-blue-highlight:#c6d8e4;--radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-full:9999px;--transition-interactive:180ms cubic-bezier(0.16,1,0.3,1);--shadow-sm:0 1px 2px oklch(0.2 0.01 80 / 0.06);--shadow-md:0 4px 12px oklch(0.2 0.01 80 / 0.08);--shadow-lg:0 12px 32px oklch(0.2 0.01 80 / 0.12);--font-body:'Satoshi','Inter',sans-serif;--font-display:'General Sans','Inter',sans-serif}
+    [data-theme="dark"]{--color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;--color-surface-offset:#1d1c1a;--color-divider:#262523;--color-border:#393836;--color-text:#cdccca;--color-text-muted:#9b9a97;--color-text-inverse:#2b2a28;--color-primary:#4f98a3;--color-primary-highlight:#313b3b;--color-warning:#bb653b;--color-warning-highlight:#564942;--color-success:#6daa45;--color-success-highlight:#3a4435;--color-blue:#5591c7;--color-blue-highlight:#3a4550;--shadow-sm:0 1px 2px oklch(0 0 0 / .2);--shadow-md:0 4px 12px oklch(0 0 0 / .3);--shadow-lg:0 12px 32px oklch(0 0 0 / .4)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);line-height:1.6;color:var(--color-text);background:radial-gradient(circle at top right,oklch(from var(--color-primary) l c h / .16),transparent 26%),radial-gradient(circle at bottom left,oklch(from var(--color-blue) l c h / .14),transparent 24%),var(--color-bg);overflow-x:hidden}button{cursor:pointer;border:none;background:none;color:inherit;font:inherit}a{text-decoration:none;color:inherit}.shell{min-height:100dvh;display:grid;grid-template-rows:auto auto 1fr auto;gap:var(--space-4);padding:env(safe-area-inset-top) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom))}.topbar,.glass,.action-card,.list-card,.bottom-nav,.notice,.empty-state{background:oklch(from var(--color-surface) l c h / .9);backdrop-filter:blur(18px);border:1px solid oklch(from var(--color-text) l c h / .1);box-shadow:var(--shadow-md)}.topbar{display:flex;align-items:center;justify-content:space-between;padding:var(--space-4);border-radius:var(--radius-xl)}.brand{display:flex;align-items:center;gap:var(--space-3)}.logo{width:2.9rem;height:2.9rem;border-radius:1rem;display:grid;place-items:center;background:linear-gradient(135deg,var(--color-primary),var(--color-blue));color:#fff;box-shadow:var(--shadow-lg)}.brand-copy h1{font-family:var(--font-display);font-size:var(--text-lg);line-height:1.1}.brand-copy p{font-size:var(--text-xs);color:var(--color-text-muted)}.icon-btn{width:2.75rem;height:2.75rem;border-radius:var(--radius-full);display:grid;place-items:center;background:var(--color-surface-offset);border:1px solid oklch(from var(--color-text) l c h / .08)}.notice{padding:var(--space-3) var(--space-4);border-radius:var(--radius-lg);font-size:var(--text-sm)}.notice.error{border-color:oklch(from var(--color-warning) l c h / .35);color:var(--color-warning)}.notice.success{border-color:oklch(from var(--color-success) l c h / .35);color:var(--color-success)}.notice.info{border-color:oklch(from var(--color-blue) l c h / .35);color:var(--color-blue)}.main{display:grid;gap:var(--space-4);align-content:start}.hero{padding:var(--space-5);border-radius:1.5rem;background:linear-gradient(160deg,oklch(from var(--color-primary) l c h / .22),transparent 55%),linear-gradient(340deg,oklch(from var(--color-blue) l c h / .12),transparent 48%),var(--color-surface-2);border:1px solid oklch(from var(--color-primary) l c h / .16);box-shadow:var(--shadow-lg)}.eyebrow{display:inline-flex;align-items:center;gap:var(--space-2);padding:.45rem .8rem;border-radius:var(--radius-full);font-size:var(--text-xs);background:var(--color-primary-highlight);color:var(--color-primary);margin-bottom:var(--space-3)}.hero h2{font-family:var(--font-display);font-size:var(--text-xl);line-height:1.08;max-width:18ch;margin-bottom:var(--space-3)}.hero p{font-size:var(--text-sm);color:var(--color-text-muted);max-width:44ch}.hero-actions{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);margin-top:var(--space-5)}.primary-btn,.secondary-btn{min-height:3rem;border-radius:.95rem;padding:0 var(--space-4);font-size:var(--text-sm);font-weight:700}.primary-btn{background:var(--color-primary);color:var(--color-text-inverse)}.secondary-btn{background:var(--color-surface-offset);border:1px solid oklch(from var(--color-text) l c h / .09)}.section-head{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}.section-head h3{font-size:var(--text-lg);font-weight:800}.section-head span{font-size:var(--text-xs);color:var(--color-text-muted)}.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}.glass{padding:var(--space-4);border-radius:1.1rem}.kpi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4)}.kpi-label{font-size:var(--text-xs);color:var(--color-text-muted)}.kpi-value{font-size:var(--text-xl);font-weight:900;font-variant-numeric:tabular-nums;line-height:1}.kpi-foot{font-size:var(--text-xs);color:var(--color-text-muted)}.quick-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}.action-card{padding:var(--space-4);border-radius:1rem;text-align:right}.action-icon{width:2.6rem;height:2.6rem;border-radius:.9rem;display:grid;place-items:center;margin-bottom:var(--space-3)}.tone-primary{background:var(--color-primary-highlight);color:var(--color-primary)}.tone-success{background:var(--color-success-highlight);color:var(--color-success)}.tone-warning{background:var(--color-warning-highlight);color:var(--color-warning)}.tone-blue{background:var(--color-blue-highlight);color:var(--color-blue)}.action-card h4{font-size:var(--text-base);font-weight:800;margin-bottom:.3rem}.action-card p{font-size:var(--text-xs);color:var(--color-text-muted)}.screen{display:none;gap:var(--space-4)}.screen.active{display:grid}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}.toolbar h3{font-size:var(--text-lg);font-weight:800}.toolbar p{font-size:var(--text-xs);color:var(--color-text-muted)}.list-wrap{display:grid;gap:var(--space-3)}.list-card{padding:var(--space-4);border-radius:1rem;display:grid;gap:var(--space-3)}.list-head{display:flex;justify-content:space-between;gap:var(--space-3);align-items:flex-start}.title-stack h4{font-size:var(--text-base);font-weight:800}.title-stack p{font-size:var(--text-xs);color:var(--color-text-muted)}.pill{padding:.45rem .75rem;border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:700}.pill-wait{color:var(--color-warning);background:var(--color-warning-highlight)}.pill-live{color:var(--color-success);background:var(--color-success-highlight)}.pill-info{color:var(--color-blue);background:var(--color-blue-highlight)}.pill-error{color:var(--color-warning);background:var(--color-warning-highlight)}.list-meta{display:flex;gap:var(--space-2);flex-wrap:wrap}.meta-chip{padding:.45rem .7rem;border-radius:var(--radius-full);font-size:var(--text-xs);background:var(--color-surface-offset);border:1px solid oklch(from var(--color-text) l c h / .08)}.mini-actions{display:flex;gap:var(--space-2)}.mini-btn{flex:1;min-height:2.75rem;border-radius:.85rem;padding:0 var(--space-3);font-size:var(--text-sm);font-weight:700;background:var(--color-surface-offset);border:1px solid oklch(from var(--color-text) l c h / .08)}.mini-btn.primary{background:var(--color-primary);color:var(--color-text-inverse);border-color:transparent}.bottom-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-2);padding:var(--space-3);border-radius:1.2rem;position:sticky;bottom:var(--space-3)}.nav-item{padding:var(--space-2);border-radius:.95rem;display:grid;justify-items:center;gap:.4rem;color:var(--color-text-muted);min-height:44px}.nav-item.active{background:var(--color-primary-highlight);color:var(--color-primary)}.nav-item span{font-size:11px;font-weight:700}.skeleton{height:6rem;border-radius:1rem;background:linear-gradient(90deg,var(--color-surface-offset) 25%,var(--color-divider) 50%,var(--color-surface-offset) 75%);background-size:200% 100%;animation:shimmer 1.4s ease-in-out infinite}.empty-state{padding:var(--space-6);border-radius:1rem;text-align:center}.empty-state h4{margin-bottom:var(--space-2);font-size:var(--text-base)}.empty-state p{font-size:var(--text-sm);color:var(--color-text-muted);margin-inline:auto;max-width:34ch}.muted{color:var(--color-text-muted)}@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}@media (min-width:768px){.shell{max-width:860px;margin:0 auto;padding-inline:var(--space-6)}.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}.quick-actions{grid-template-columns:repeat(4,minmax(0,1fr))}.hero-actions{grid-template-columns:max-content max-content;justify-content:start}}
   </style>
 </head>
 <body>
@@ -19,7 +19,7 @@
     <header class="topbar">
       <div class="brand">
         <div class="logo" aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 19V8.5L14 4L22 8.5V19L14 24L6 19Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M10 11.5L14 9.2L18 11.5V16.3L14 18.6L10 16.3V11.5Z" fill="currentColor" opacity=".88"/></svg>
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 19V8.5L14 4L22 8.5V19L14 24L6 19Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M10 11.5L14 9.2L18 11.5V16.3L14 18.6L10 16.3V11.5Z" fill="currentColor" opacity=".88"/></svg>
         </div>
         <div class="brand-copy">
           <h1>منادِم للتجار</h1>
@@ -35,11 +35,11 @@
       <section id="screen-home" class="screen active">
         <article class="hero">
           <div class="eyebrow">⚡ Telegram Merchant Mini App</div>
-          <h2>واجهة أنظف وأخف مع نفس الربط الكامل بالـ Worker.</h2>
-          <p id="heroText">جاري تجهيز المصادقة وتحميل البيانات التشغيلية...</p>
+          <h2>واجهة تاجر متصلة مباشرة بالـ Worker مع تحقق Telegram server-side.</h2>
+          <p id="heroText">يتم الآن تجهيز المصادقة وتحميل بيانات اللوحة التشغيلية...</p>
           <div class="hero-actions">
-            <button class="primary-btn" data-screen="reservations">الحجوزات</button>
-            <button class="secondary-btn" data-screen="status">الحالة</button>
+            <button class="primary-btn" data-screen="reservations">عرض الحجوزات</button>
+            <button class="secondary-btn" data-screen="status">حالة الفرع</button>
           </div>
         </article>
 
@@ -51,28 +51,31 @@
           <div class="skeleton"></div>
         </section>
 
-        <div class="section-head"><h3>إجراءات سريعة</h3><span>نسخة أخف بصريًا</span></div>
+        <div class="section-head"><h3>إجراءات سريعة</h3><span>مرتبطة بالتاجر الموثق</span></div>
         <section class="quick-actions">
-          <button class="action-card" data-screen="reservations"><div class="action-icon tone-primary">📋</div><h4>الحجوزات</h4><p>قائمة حيّة.</p></button>
-          <button class="action-card" data-screen="status"><div class="action-icon tone-success">🟢</div><h4>الحالة</h4><p>ملخص الفرع.</p></button>
-          <button class="action-card" id="sendAlertBtn"><div class="action-icon tone-warning">🔔</div><h4>تنبيه</h4><p>إرسال سريع.</p></button>
-          <button class="action-card" data-screen="settings"><div class="action-icon tone-blue">⚙️</div><h4>الإعدادات</h4><p>هوية وصلاحيات.</p></button>
+          <button class="action-card" data-screen="reservations"><div class="action-icon tone-primary">📋</div><h4>الحجوزات</h4><p>قائمة حيّة قابلة للتحديث.</p></button>
+          <button class="action-card" data-screen="status"><div class="action-icon tone-success">🟢</div><h4>الحالة</h4><p>قراءة تشغيلية مباشرة للفرع.</p></button>
+          <button class="action-card" id="sendAlertBtn"><div class="action-icon tone-warning">🔔</div><h4>تنبيه سريع</h4><p>إرسال تنبيه تجريبي عبر API.</p></button>
+          <button class="action-card" data-screen="settings"><div class="action-icon tone-blue">⚙️</div><h4>الإعدادات</h4><p>هوية التاجر والصلاحيات.</p></button>
         </section>
       </section>
 
       <section id="screen-reservations" class="screen">
-        <div class="toolbar"><div><h3>الحجوزات</h3><p>قائمة التذاكر الحالية</p></div><button class="icon-btn" data-screen="home">⌂</button></div>
-        <div class="list-wrap" id="reservationsList"><div class="skeleton"></div><div class="skeleton"></div></div>
+        <div class="toolbar"><div><h3>الحجوزات</h3><p>بيانات قادمة من Worker API</p></div><button class="icon-btn" data-screen="home">⌂</button></div>
+        <div class="list-wrap" id="reservationsList">
+          <div class="skeleton"></div>
+          <div class="skeleton"></div>
+        </div>
       </section>
 
       <section id="screen-status" class="screen">
-        <div class="toolbar"><div><h3>الحالة الحالية</h3><p>تشخيص وتشغيل</p></div><button class="icon-btn" data-screen="home">⌂</button></div>
+        <div class="toolbar"><div><h3>الحالة الحالية</h3><p>ملخص تشغيلي لحظي</p></div><button class="icon-btn" data-screen="home">⌂</button></div>
         <section class="kpis" id="statusGrid"></section>
         <div class="list-wrap" id="debugInfo"></div>
       </section>
 
       <section id="screen-settings" class="screen">
-        <div class="toolbar"><div><h3>الإعدادات</h3><p>بيانات التاجر</p></div><button class="icon-btn" data-screen="home">⌂</button></div>
+        <div class="toolbar"><div><h3>الإعدادات والصلاحيات</h3><p>معلومات التاجر الموثق</p></div><button class="icon-btn" data-screen="home">⌂</button></div>
         <div class="list-wrap" id="merchantInfo"></div>
       </section>
     </main>
@@ -90,6 +93,7 @@
     const tg = window.Telegram?.WebApp;
     const initData = tg?.initData || '';
     const html = document.documentElement;
+
     const notice = document.getElementById('notice');
     const merchantName = document.getElementById('merchantName');
     const heroText = document.getElementById('heroText');
@@ -104,10 +108,20 @@
     const screens = [...document.querySelectorAll('.screen')];
     const navItems = [...document.querySelectorAll('[data-screen]')];
 
+    const state = {
+      merchant: null,
+      dashboard: null,
+      reservations: [],
+      debug: null
+    };
+
     if (tg) {
       tg.ready();
       tg.expand();
-      try { tg.setHeaderColor('#171614'); tg.setBackgroundColor('#171614'); } catch {}
+      try {
+        tg.setHeaderColor('#171614');
+        tg.setBackgroundColor('#171614');
+      } catch {}
       tg.BackButton?.hide();
     }
 
@@ -115,6 +129,7 @@
       screens.forEach(screen => screen.classList.toggle('active', screen.id === `screen-${id}`));
       document.querySelectorAll('.bottom-nav .nav-item').forEach(btn => btn.classList.toggle('active', btn.dataset.screen === id));
       tg?.HapticFeedback?.selectionChanged?.();
+
       if (tg?.BackButton) {
         tg.BackButton.hide();
         if (id !== 'home') {
@@ -127,7 +142,9 @@
     navItems.forEach(item => item.addEventListener('click', () => setScreen(item.dataset.screen)));
 
     themeToggle.addEventListener('click', () => {
-      html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      tg?.HapticFeedback?.impactOccurred?.('light');
     });
 
     function showNotice(message, type = 'info') {
@@ -136,18 +153,39 @@
       notice.textContent = message;
     }
 
+    function hideNotice() {
+      notice.hidden = true;
+    }
+
     function authHeaders() {
-      return { 'Authorization': `TelegramInitData ${initData}` };
+      return {
+        'Authorization': `TelegramInitData ${initData}`
+      };
     }
 
     async function api(path, options = {}) {
+      const headers = {
+        ...(options.headers || {}),
+        ...authHeaders()
+      };
+
       const response = await fetch(`${WORKER_BASE}${path}`, {
         method: options.method || 'GET',
-        headers: { ...(options.headers || {}), ...authHeaders() },
+        headers,
         body: options.body
       });
-      const data = await response.json();
-      if (!response.ok || data.ok === false) throw new Error(data.error || `HTTP ${response.status}`);
+
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error(`استجابة غير صالحة من الخادم (${response.status})`);
+      }
+
+      if (!response.ok || data.ok === false) {
+        throw new Error(data.error || `HTTP ${response.status}`);
+      }
+
       return data;
     }
 
@@ -158,119 +196,174 @@
       return data;
     }
 
-    function renderKpis(d) {
+    function renderKpis(dashboard) {
       kpiGrid.innerHTML = `
-        <article class="glass"><div class="kpi-top"><span class="kpi-label">المنتظرون</span><span>⏳</span></div><div class="kpi-value">${d.waitingNow}</div><div class="kpi-foot">الصف الحالي</div></article>
-        <article class="glass"><div class="kpi-top"><span class="kpi-label">النشطة</span><span>🟢</span></div><div class="kpi-value">${d.activeWindows}</div><div class="kpi-foot">جاهزة للخدمة</div></article>
-        <article class="glass"><div class="kpi-top"><span class="kpi-label">الانتظار</span><span>📈</span></div><div class="kpi-value">${d.avgWaitMinutes}د</div><div class="kpi-foot">المتوسط</div></article>
-        <article class="glass"><div class="kpi-top"><span class="kpi-label">الرضا</span><span>⭐</span></div><div class="kpi-value">${d.satisfactionRate}%</div><div class="kpi-foot">مؤشر لحظي</div></article>
+        <article class="glass"><div class="kpi-top"><span class="kpi-label">المنتظرون الآن</span><span>⏳</span></div><div class="kpi-value">${dashboard.waitingNow}</div><div class="kpi-foot">صف الانتظار الحالي</div></article>
+        <article class="glass"><div class="kpi-top"><span class="kpi-label">الشبابيك النشطة</span><span>🟢</span></div><div class="kpi-value">${dashboard.activeWindows}</div><div class="kpi-foot">جاهزة للخدمة</div></article>
+        <article class="glass"><div class="kpi-top"><span class="kpi-label">متوسط الانتظار</span><span>📈</span></div><div class="kpi-value">${dashboard.avgWaitMinutes}د</div><div class="kpi-foot">مؤشر زمني مباشر</div></article>
+        <article class="glass"><div class="kpi-top"><span class="kpi-label">الرضا اللحظي</span><span>⭐</span></div><div class="kpi-value">${dashboard.satisfactionRate}%</div><div class="kpi-foot">استنادًا إلى البيانات الحالية</div></article>
       `;
+
       statusGrid.innerHTML = `
-        <article class="glass"><div class="kpi-top"><span class="kpi-label">الحالة</span><span>🏢</span></div><div class="kpi-value">${d.branchStatus === 'connected' ? 'متصل' : d.branchStatus}</div><div class="kpi-foot">اتصال مباشر</div></article>
-        <article class="glass"><div class="kpi-top"><span class="kpi-label">التنبيهات</span><span>🔔</span></div><div class="kpi-value">${d.alertsOpen}</div><div class="kpi-foot">مفتوحة</div></article>
-        <article class="glass"><div class="kpi-top"><span class="kpi-label">المنتظرون</span><span>📋</span></div><div class="kpi-value">${d.waitingNow}</div><div class="kpi-foot">حاليًا</div></article>
-        <article class="glass"><div class="kpi-top"><span class="kpi-label">النوافذ</span><span>⚙️</span></div><div class="kpi-value">${d.activeWindows}</div><div class="kpi-foot">عاملة</div></article>
+        <article class="glass"><div class="kpi-top"><span class="kpi-label">حالة الفرع</span><span>🏢</span></div><div class="kpi-value">${dashboard.branchStatus === 'connected' ? 'متصل' : dashboard.branchStatus}</div><div class="kpi-foot">اتصال Worker وواجهة التاجر</div></article>
+        <article class="glass"><div class="kpi-top"><span class="kpi-label">تنبيهات مفتوحة</span><span>🔔</span></div><div class="kpi-value">${dashboard.alertsOpen}</div><div class="kpi-foot">تحتاج مراجعة</div></article>
+        <article class="glass"><div class="kpi-top"><span class="kpi-label">المنتظرون</span><span>📋</span></div><div class="kpi-value">${dashboard.waitingNow}</div><div class="kpi-foot">حاليًا في الصف</div></article>
+        <article class="glass"><div class="kpi-top"><span class="kpi-label">النافذات العاملة</span><span>⚙️</span></div><div class="kpi-value">${dashboard.activeWindows}</div><div class="kpi-foot">جاهزية تشغيلية</div></article>
       `;
     }
 
     function reservationPill(status) {
-      if (status === 'ready_now') return '<span class="pill pill-live">جاهز</span>';
+      if (status === 'ready_now') return '<span class="pill pill-live">جاهز الآن</span>';
       if (status === 'waiting') return '<span class="pill pill-wait">ينتظر</span>';
-      return '<span class="pill pill-info">مراقبة</span>';
+      if (status === 'monitoring') return '<span class="pill pill-info">مراقبة</span>';
+      return '<span class="pill pill-info">غير محدد</span>';
     }
 
     function renderReservations(items) {
+      if (!items.length) {
+        reservationsList.innerHTML = '<div class="empty-state"><h4>لا توجد حجوزات حالياً</h4><p>سيتم عرض الحجوزات مباشرة عند توفرها من واجهة الـ Worker.</p></div>';
+        return;
+      }
+
       reservationsList.innerHTML = items.map(item => `
         <article class="list-card">
           <div class="list-head">
-            <div class="title-stack"><h4>تذكرة ${item.id}</h4><p>${item.customerType} · بيانات حيّة</p></div>
+            <div class="title-stack">
+              <h4>تذكرة ${item.id}</h4>
+              <p>${item.customerType} · بيانات حيّة</p>
+            </div>
             ${reservationPill(item.status)}
           </div>
           <div class="list-meta">
-            <span class="meta-chip">${item.waitingMinutes} د</span>
+            <span class="meta-chip">${item.waitingMinutes} دقيقة</span>
             <span class="meta-chip">${item.window || 'بدون نافذة'}</span>
             <span class="meta-chip">${item.status}</span>
           </div>
           <div class="mini-actions">
-            <button class="mini-btn primary" data-ticket="${item.id}">تنبيه</button>
+            <button class="mini-btn primary" data-ticket="${item.id}">تنبيه العميل</button>
             <button class="mini-btn" data-details="${item.id}">تفاصيل</button>
           </div>
         </article>
       `).join('');
 
-      document.querySelectorAll('[data-ticket]').forEach(btn => btn.addEventListener('click', async () => {
-        const ticketId = btn.dataset.ticket;
-        try {
-          const result = await api('/api/alerts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ type: 'customer_call', message: `طلب تنبيه للتذكرة ${ticketId}` })
-          });
-          showNotice(`تم إرسال تنبيه ${ticketId}: ${result.alert.type}`, 'success');
-        } catch (error) {
-          showNotice(`فشل تنبيه ${ticketId}: ${error.message}`, 'error');
-        }
-      }));
+      document.querySelectorAll('[data-ticket]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const ticketId = btn.dataset.ticket;
+          try {
+            const result = await api('/api/alerts', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                type: 'customer_call',
+                message: `طلب تنبيه للتذكرة ${ticketId}`
+              })
+            });
+            showNotice(`تم إرسال تنبيه للتذكرة ${ticketId}: ${result.alert.type}`, 'success');
+            tg?.HapticFeedback?.notificationOccurred?.('success');
+          } catch (error) {
+            showNotice(`فشل إرسال تنبيه للتذكرة ${ticketId}: ${error.message}`, 'error');
+            tg?.HapticFeedback?.notificationOccurred?.('error');
+          }
+        });
+      });
 
-      document.querySelectorAll('[data-details]').forEach(btn => btn.addEventListener('click', () => {
-        showNotice(`البيانات الحالية mock ومتصلة بالـ Worker بنجاح.`, 'info');
-      }));
+      document.querySelectorAll('[data-details]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const ticketId = btn.dataset.details;
+          showNotice(`التذكرة ${ticketId} مرتبطة حاليًا ببيانات mock من Worker.`, 'info');
+        });
+      });
     }
 
-    function renderMerchant(m) {
+    function renderMerchant(merchant) {
       merchantInfo.innerHTML = `
-        <article class="list-card"><div class="list-head"><div class="title-stack"><h4>التاجر</h4><p>${m.firstName || ''} ${m.lastName || ''}</p></div><span class="pill pill-live">موثق</span></div></article>
-        <article class="list-card"><div class="list-head"><div class="title-stack"><h4>اسم المستخدم</h4><p>${m.username || 'بدون username'}</p></div><span class="pill pill-info">Telegram</span></div></article>
-        <article class="list-card"><div class="list-head"><div class="title-stack"><h4>المعرف</h4><p>${m.telegramUserId}</p></div><span class="pill pill-info">ID</span></div></article>
-        <article class="list-card"><div class="list-head"><div class="title-stack"><h4>الفرع</h4><p>${m.branchName}</p></div><span class="pill pill-live">${m.role}</span></div></article>
+        <article class="list-card"><div class="list-head"><div class="title-stack"><h4>التاجر الموثق</h4><p>${merchant.firstName || ''} ${merchant.lastName || ''}</p></div><span class="pill pill-live">موثق</span></div></article>
+        <article class="list-card"><div class="list-head"><div class="title-stack"><h4>اسم المستخدم</h4><p>${merchant.username || 'بدون username'}</p></div><span class="pill pill-info">Telegram</span></div></article>
+        <article class="list-card"><div class="list-head"><div class="title-stack"><h4>رقم التاجر</h4><p>${merchant.telegramUserId}</p></div><span class="pill pill-info">ID</span></div></article>
+        <article class="list-card"><div class="list-head"><div class="title-stack"><h4>الفرع</h4><p>${merchant.branchName}</p></div><span class="pill pill-live">${merchant.role}</span></div></article>
       `;
     }
 
     function renderDebug(debug) {
       debugInfo.innerHTML = `
         <article class="list-card">
-          <div class="list-head"><div class="title-stack"><h4>تشخيص الاتصال</h4><p>للتحقق من أصل الطلب</p></div><span class="pill pill-info">debug</span></div>
+          <div class="list-head">
+            <div class="title-stack">
+              <h4>تشخيص الاتصال</h4>
+              <p>يساعدك على كشف أصل الطلب الفعلي</p>
+            </div>
+            <span class="pill pill-info">debug</span>
+          </div>
           <div class="list-meta">
             <span class="meta-chip">Origin: ${debug.requestOrigin || 'غير متوفر'}</span>
             <span class="meta-chip">Configured: ${debug.configuredOrigin || 'غير متوفر'}</span>
           </div>
-          <p class="muted">${debug.userAgent || ''}</p>
+          <p class="muted">${debug.userAgent || 'No user agent'}</p>
         </article>
       `;
     }
 
+    function renderAuthError(error) {
+      kpiGrid.innerHTML = '<article class="glass"><div class="kpi-label">تعذر تحميل المؤشرات</div><div class="kpi-foot">تحقق من صلاحيات Telegram أو إعدادات Worker</div></article>';
+      reservationsList.innerHTML = '<div class="empty-state"><h4>تعذر تحميل الحجوزات</h4><p>تحقق من CORS أو من صحة initData المرسل من Telegram.</p></div>';
+      merchantInfo.innerHTML = `<article class="list-card"><div class="title-stack"><h4>فشل التحقق</h4><p>${error.message}</p></div></article>`;
+      statusGrid.innerHTML = `<article class="glass"><div class="kpi-top"><span class="kpi-label">الحالة</span><span>⚠️</span></div><div class="kpi-value">خطأ</div><div class="kpi-foot">${error.message}</div></article>`;
+    }
+
     async function boot() {
+      hideNotice();
+
       if (!tg || !initData) {
-        showNotice('افتح الصفحة من داخل Telegram Mini App.', 'error');
-        heroText.textContent = 'لا يمكن تنفيذ المصادقة خارج Telegram.';
+        showNotice('يجب فتح هذه الصفحة من داخل Telegram Mini App حتى يتم تمرير initData.', 'error');
+        heroText.textContent = 'تم فتح الصفحة خارج Telegram، لذلك لا يمكن تنفيذ المصادقة.';
         dashboardStamp.textContent = 'خارج Telegram';
+        renderAuthError(new Error('Missing Telegram WebApp context'));
+
+        try {
+          const debug = await publicApi('/debug');
+          state.debug = debug;
+          renderDebug(debug);
+        } catch {}
         return;
       }
 
       try {
-        showNotice('جاري تحميل بيانات التاجر...', 'info');
+        showNotice('جاري التحقق من التاجر وتحميل بيانات اللوحة...', 'info');
+
         const auth = await api('/api/auth/telegram', { method: 'POST' });
+        state.merchant = auth.merchant;
         merchantName.textContent = `مرحبًا ${auth.merchant.firstName || auth.merchant.username || 'التاجر'} · ${auth.merchant.branchName}`;
         renderMerchant(auth.merchant);
 
         const dashboardResult = await api('/api/dashboard');
-        renderKpis(dashboardResult.dashboard);
-        dashboardStamp.textContent = 'تم التحميل';
-        heroText.textContent = `تم تحميل مؤشرات ${auth.merchant.branchName} بنجاح.`;
+        state.dashboard = dashboardResult.dashboard;
+        renderKpis(state.dashboard);
+        dashboardStamp.textContent = 'تم التحميل بنجاح';
+        heroText.textContent = `تم التحقق من صلاحيات ${auth.merchant.role} وتحميل مؤشرات ${auth.merchant.branchName}.`;
 
         const reservationsResult = await api('/api/reservations');
-        renderReservations(reservationsResult.reservations || []);
+        state.reservations = reservationsResult.reservations || [];
+        renderReservations(state.reservations);
 
         try {
           const debug = await publicApi('/debug');
+          state.debug = debug;
           renderDebug(debug);
         } catch {}
 
-        showNotice('تم تحميل الواجهة بنجاح.', 'success');
+        showNotice('تم التحقق من التاجر وتحميل البيانات بنجاح.', 'success');
       } catch (error) {
-        showNotice(`فشل التحميل: ${error.message}`, 'error');
-        heroText.textContent = 'تعذر الوصول إلى بيانات اللوحة.';
-        dashboardStamp.textContent = 'فشل';
+        console.error(error);
+        showNotice(`فشل التحقق أو التحميل: ${error.message}`, 'error');
+        heroText.textContent = 'تعذر إكمال المصادقة أو الوصول إلى بيانات اللوحة.';
+        dashboardStamp.textContent = 'فشل التحميل';
+        renderAuthError(error);
+
+        try {
+          const debug = await publicApi('/debug');
+          state.debug = debug;
+          renderDebug(debug);
+        } catch {}
       }
     }
 
@@ -279,11 +372,16 @@
         const result = await api('/api/alerts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'ops_notice', message: 'تم إرسال تنبيه تجريبي من لوحة التاجر.' })
+          body: JSON.stringify({
+            type: 'ops_notice',
+            message: 'تم إرسال تنبيه تجريبي من لوحة التاجر.'
+          })
         });
-        showNotice(`تم إرسال التنبيه: ${result.alert.type}`, 'success');
+        showNotice(`تم إرسال التنبيه بنجاح: ${result.alert.type}`, 'success');
+        tg?.HapticFeedback?.notificationOccurred?.('success');
       } catch (error) {
         showNotice(`فشل إرسال التنبيه: ${error.message}`, 'error');
+        tg?.HapticFeedback?.notificationOccurred?.('error');
       }
     });
 
