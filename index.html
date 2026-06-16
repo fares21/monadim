@@ -88,299 +88,334 @@
     </nav>
   </div>
 
-  <script>
-    const tg = window.Telegram?.WebApp || null;
-    const themeToggle = document.getElementById('themeToggle');
-    const notice = document.getElementById('notice');
-    const merchantName = document.getElementById('merchantName');
-    const heroText = document.getElementById('heroText');
-    const dashboardStamp = document.getElementById('dashboardStamp');
-    const kpiGrid = document.getElementById('kpiGrid');
-    const reservationsList = document.getElementById('reservationsList');
-    const statusGrid = document.getElementById('statusGrid');
-    const debugInfo = document.getElementById('debugInfo');
-    const merchantInfo = document.getElementById('merchantInfo');
-    const sendAlertBtn = document.getElementById('sendAlertBtn');
-    const refreshBtn = document.getElementById('refreshBtn');
-    const screens = document.querySelectorAll('.screen');
-    const navItems = document.querySelectorAll('[data-screen]');
-    const storageKey = 'monadim-theme';
+<script>
+  const tg = window.Telegram?.WebApp || null;
+  const themeToggle = document.getElementById('themeToggle');
+  const notice = document.getElementById('notice');
+  const merchantName = document.getElementById('merchantName');
+  const heroText = document.getElementById('heroText');
+  const dashboardStamp = document.getElementById('dashboardStamp');
+  const kpiGrid = document.getElementById('kpiGrid');
+  const reservationsList = document.getElementById('reservationsList');
+  const statusGrid = document.getElementById('statusGrid');
+  const debugInfo = document.getElementById('debugInfo');
+  const merchantInfo = document.getElementById('merchantInfo');
+  const sendAlertBtn = document.getElementById('sendAlertBtn');
+  const refreshBtn = document.getElementById('refreshBtn');
+  const screens = document.querySelectorAll('.screen');
+  const navItems = document.querySelectorAll('[data-screen]');
+  const storageKey = 'monadim-theme';
 
-    const state = { merchant: null, dashboard: null, reservations: [], debug: null };
+  const state = { merchant: null, dashboard: null, reservations: [], debug: null };
 
-    function setTheme(theme) {
-      document.documentElement.dataset.theme = theme;
-      localStorage.setItem(storageKey, theme);
-      if (tg?.setHeaderColor) {
-        tg.setHeaderColor(theme === 'dark' ? '#171614' : '#f7f6f2');
-      }
+  function setTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem(storageKey, theme);
+    if (tg?.setHeaderColor) {
+      tg.setHeaderColor(theme === 'dark' ? '#171614' : '#f7f6f2');
     }
+  }
 
-    function syncTheme() {
-      const stored = localStorage.getItem(storageKey);
-      const preferred = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      setTheme(preferred);
-    }
+  function syncTheme() {
+    const stored = localStorage.getItem(storageKey);
+    const preferred = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    setTheme(preferred);
+  }
 
-    function showNotice(message, kind = 'info') {
-      notice.textContent = message;
-      notice.className = `notice ${kind}`;
-      notice.hidden = false;
-    }
+  function showNotice(message, kind = 'info') {
+    notice.textContent = message;
+    notice.className = `notice ${kind}`;
+    notice.hidden = false;
+  }
 
-    function hideNotice() {
-      notice.hidden = true;
-    }
+  function hideNotice() {
+    notice.hidden = true;
+  }
 
-    function setScreen(screen) {
-      screens.forEach(el => el.classList.toggle('active', el.id === `screen-${screen}`));
-      navItems.forEach(btn => btn.classList.toggle('active', btn.dataset.screen === screen));
-      tg?.BackButton?.[screen === 'home' ? 'hide' : 'show']?.();
-    }
+  function setScreen(screen) {
+    screens.forEach(el => el.classList.toggle('active', el.id === `screen-${screen}`));
+    navItems.forEach(btn => btn.classList.toggle('active', btn.dataset.screen === screen));
+    tg?.BackButton?.[screen === 'home' ? 'hide' : 'show']?.();
+  }
 
-    function publicApi(path, options = {}) {
-      return fetch(`https://monadim-telegram-worker.bouaffar00.workers.dev${path}`, {
-        method: options.method || 'GET',
-        headers: options.headers || {}
-      }).then(async r => {
-        const text = await r.text();
-        let data;
-        try { data = JSON.parse(text); } catch { data = { ok: false, error: text }; }
-        if (!r.ok || data.ok === false) throw new Error(data.error || `HTTP ${r.status}`);
-        return data;
-      });
-    }
+  async function publicApi(path, options = {}) {
+    const res = await fetch(`https://monadim-telegram-worker.bouaffar00.workers.dev${path}`, {
+      method: options.method || 'GET',
+      headers: options.headers || {}
+    });
+    const text = await res.text();
+    let data;
+    try { data = JSON.parse(text); } catch { data = { ok: false, error: text }; }
+    if (!res.ok || data.ok === false) throw new Error(data.error || `HTTP ${res.status}`);
+    return data;
+  }
 
-    function api(path, options = {}) {
-      const initData = tg?.initData || '';
-      return fetch(`https://monadim-telegram-worker.bouaffar00.workers.dev${path}`, {
+  async function api(path, options = {}) {
+    const initData = tg?.initData || '';
+
+    console.log('API request path:', path);
+    console.log('Telegram initData length:', initData.length);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+
+    try {
+      const res = await fetch(`https://monadim-telegram-worker.bouaffar00.workers.dev${path}`, {
         ...options,
         headers: {
           'Authorization': `TelegramInitData ${initData}`,
           ...(options.headers || {})
-        }
-      }).then(async r => {
-        const text = await r.text();
-        let data;
-        try { data = JSON.parse(text); } catch { data = { ok: false, error: text }; }
-        if (!r.ok || data.ok === false) throw new Error(data.error || `HTTP ${r.status}`);
-        return data;
+        },
+        signal: controller.signal
       });
-    }
 
-    function reservationPill(status) {
-      const map = {
-        ready_now: '<span class="pill pill-live">جاهز</span>',
-        waiting: '<span class="pill pill-wait">بانتظار</span>',
-        monitoring: '<span class="pill pill-info">مراقبة</span>'
-      };
-      return map[status] || '<span class="pill pill-error">غير معروف</span>';
-    }
+      clearTimeout(timeout);
 
-    function renderKpis(d) {
-      kpiGrid.innerHTML = [
-        ['الحالة', d.branchStatus, 'متصل الآن'],
-        ['المنتظرون', d.waitingNow, 'داخل الفرع'],
-        ['النوافذ', d.activeWindows, 'نشطة'],
-        ['الرضا', `${d.satisfactionRate}%`, 'مؤشر رضا']
-      ].map(([label, value, foot]) => `<article class="glass"><div class="kpi-top"><span class="kpi-label">${label}</span><span>•</span></div><div class="kpi-value">${value}</div><div class="kpi-foot">${foot}</div></article>`).join('');
-    }
+      const text = await res.text();
+      console.log('API response status:', res.status, 'path:', path);
+      console.log('API response body:', text);
 
-    function renderReservations(items) {
-      if (!items.length) {
-        reservationsList.innerHTML = '<div class="empty-state"><h4>لا توجد حجوزات حالياً</h4><p>سيتم عرض الحجوزات مباشرة عند توفرها من واجهة الـ Worker.</p></div>';
-        return;
+      let data;
+      try { data = JSON.parse(text); } catch { data = { ok: false, error: text }; }
+
+      if (!res.ok || data.ok === false) {
+        throw new Error(data.error || `HTTP ${res.status}`);
       }
-      reservationsList.innerHTML = items.map(item => `
-        <article class="list-card">
-          <div class="list-head">
-            <div class="title-stack">
-              <h4>تذكرة ${item.id}</h4>
-              <p>${item.customerType} · بيانات حيّة</p>
-            </div>
-            ${reservationPill(item.status)}
-          </div>
-          <div class="list-meta">
-            <span class="meta-chip">${item.waitingMinutes} دقيقة</span>
-            <span class="meta-chip">${item.window || 'بدون نافذة'}</span>
-            <span class="meta-chip">${item.status}</span>
-          </div>
-          <div class="mini-actions">
-            <button class="mini-btn primary" data-ticket="${item.id}">تنبيه العميل</button>
-            <button class="mini-btn" data-details="${item.id}">تفاصيل</button>
-          </div>
-        </article>
-      `).join('');
-      document.querySelectorAll('[data-ticket]').forEach(btn => btn.addEventListener('click', async () => {
-        const ticketId = btn.dataset.ticket;
-        try {
-          const result = await api('/api/alerts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ type: 'ticket_notice', message: `تنبيه للتذكرة ${ticketId}` })
-          });
-          showNotice(`تم إرسال تنبيه للتذكرة ${ticketId}: ${result.alert.type}`, 'success');
-        } catch (error) {
-          showNotice(`فشل إرسال تنبيه للتذكرة ${ticketId}: ${error.message}`, 'error');
-        }
-      }));
-      document.querySelectorAll('[data-details]').forEach(btn => btn.addEventListener('click', () => showNotice(`التذكرة ${btn.dataset.details} مرتبطة حاليًا ببيانات حيّة من Worker.`, 'info')));
+
+      return data;
+    } catch (error) {
+      clearTimeout(timeout);
+      console.error('API request failed:', path, error);
+      throw error;
+    }
+  }
+
+  function reservationPill(status) {
+    const map = {
+      ready_now: '<span class="pill pill-live">جاهز</span>',
+      waiting: '<span class="pill pill-wait">بانتظار</span>',
+      monitoring: '<span class="pill pill-info">مراقبة</span>'
+    };
+    return map[status] || '<span class="pill pill-error">غير معروف</span>';
+  }
+
+  function renderKpis(d) {
+    kpiGrid.innerHTML = [
+      ['الحالة', d.branchStatus, 'متصل الآن'],
+      ['المنتظرون', d.waitingNow, 'داخل الفرع'],
+      ['النوافذ', d.activeWindows, 'نشطة'],
+      ['الرضا', `${d.satisfactionRate}%`, 'مؤشر رضا']
+    ].map(([label, value, foot]) => `
+      <article class="glass">
+        <div class="kpi-top"><span class="kpi-label">${label}</span><span>•</span></div>
+        <div class="kpi-value">${value}</div>
+        <div class="kpi-foot">${foot}</div>
+      </article>
+    `).join('');
+  }
+
+  function renderReservations(items) {
+    if (!items.length) {
+      reservationsList.innerHTML = '<div class="empty-state"><h4>لا توجد حجوزات حالياً</h4><p>سيتم عرض الحجوزات مباشرة عند توفرها من واجهة الـ Worker.</p></div>';
+      return;
     }
 
-    function renderMerchant(merchant) {
-      merchantInfo.innerHTML = `
-        <article class="list-card">
-          <div class="list-head">
-            <div class="title-stack">
-              <h4>الخطوة التالية</h4>
-              <p>السابق → الحالة → الحجوزات</p>
-            </div>
-            <span class="pill pill-live">التالي</span>
+    reservationsList.innerHTML = items.map(item => `
+      <article class="list-card">
+        <div class="list-head">
+          <div class="title-stack">
+            <h4>تذكرة ${item.id}</h4>
+            <p>${item.customerType} · بيانات حيّة</p>
           </div>
-          <div class="mini-actions">
-            <button class="mini-btn" data-screen="settings">السابق</button>
-            <button class="mini-btn primary" data-screen="reservations">التالي</button>
-          </div>
-        </article>
-        <article class="list-card"><div class="list-head"><div class="title-stack"><h4>التاجر الموثق</h4><p>${merchant.firstName || ''} ${merchant.lastName || ''}</p></div><span class="pill pill-live">موثق</span></div></article>
-        <article class="list-card"><div class="list-head"><div class="title-stack"><h4>اسم المستخدم</h4><p>${merchant.username || 'بدون username'}</p></div><span class="pill pill-info">Telegram</span></div></article>
-        <article class="list-card"><div class="list-head"><div class="title-stack"><h4>رقم التاجر</h4><p>${merchant.telegramUserId}</p></div><span class="pill pill-info">ID</span></div></article>
-        <article class="list-card"><div class="list-head"><div class="title-stack"><h4>الفرع</h4><p>${merchant.branchName}</p></div><span class="pill pill-live">${merchant.role}</span></div></article>
-      `;
-      merchantInfo.querySelectorAll('[data-screen]').forEach(btn => btn.addEventListener('click', () => setScreen(btn.dataset.screen)));
-    }
+          ${reservationPill(item.status)}
+        </div>
+        <div class="list-meta">
+          <span class="meta-chip">${item.waitingMinutes} دقيقة</span>
+          <span class="meta-chip">${item.window || 'بدون نافذة'}</span>
+          <span class="meta-chip">${item.status}</span>
+        </div>
+        <div class="mini-actions">
+          <button class="mini-btn primary" data-ticket="${item.id}">تنبيه العميل</button>
+          <button class="mini-btn" data-details="${item.id}">تفاصيل</button>
+        </div>
+      </article>
+    `).join('');
 
-    function renderDebug(debug) {
-      debugInfo.innerHTML = `
-        <article class="list-card">
-          <div class="list-head">
-            <div class="title-stack"><h4>تشخيص الاتصال</h4><p>يساعدك على كشف أصل الطلب الفعلي</p></div>
-            <span class="pill pill-info">debug</span>
-          </div>
-          <div class="list-meta">
-            <span class="meta-chip">Origin: ${debug.requestOrigin || 'غير متوفر'}</span>
-            <span class="meta-chip">Configured: ${debug.configuredOrigin || 'غير متوفر'}</span>
-          </div>
-          <p class="muted">${debug.userAgent || 'No user agent'}</p>
-        </article>
-      `;
-    }
-
-    function renderAuthError(error) {
-      kpiGrid.innerHTML = '<article class="glass"><div class="kpi-label">تعذر تحميل المؤشرات</div><div class="kpi-foot">تحقق من صلاحيات Telegram أو إعدادات Worker</div></article>';
-      reservationsList.innerHTML = '<div class="empty-state"><h4>تعذر تحميل الحجوزات</h4><p>تحقق من CORS أو من صحة initData المرسل من Telegram.</p></div>';
-      merchantInfo.innerHTML = `<article class="list-card"><div class="title-stack"><h4>فشل التحقق</h4><p>${error.message}</p></div></article>`;
-      statusGrid.innerHTML = `<article class="glass"><div class="kpi-top"><span class="kpi-label">الحالة</span><span>⚠️</span></div><div class="kpi-value">خطأ</div><div class="kpi-foot">${error.message}</div></article>`;
-    }
-
-    async function boot() {
-      hideNotice();
-      if (!tg || !tg.initData) {
-        showNotice('يجب فتح هذه الصفحة من داخل Telegram Mini App حتى يتم تمرير initData.', 'error');
-        heroText.textContent = 'تم فتح الصفحة خارج Telegram، لذلك لا يمكن تنفيذ المصادقة.';
-        dashboardStamp.textContent = 'خارج Telegram';
-        renderAuthError(new Error('Missing Telegram WebApp context'));
-        try { renderDebug(await publicApi('/debug')); } catch {}
-        return;
-      }
-      try {
-        showNotice('جاري التحقق من التاجر وتحميل بيانات اللوحة...', 'info');
-        const auth = await api('/api/auth/telegram', { method: 'POST' });
-        state.merchant = auth.merchant;
-        merchantName.textContent = `مرحبًا ${auth.merchant.firstName || auth.merchant.username || 'التاجر'} · ${auth.merchant.branchName}`;
-        renderMerchant(auth.merchant);
-        const dashboardResult = await api('/api/dashboard');
-        state.dashboard = dashboardResult.dashboard;
-        renderKpis(state.dashboard);
-        dashboardStamp.textContent = 'تم التحميل بنجاح';
-        heroText.textContent = `تم التحقق من صلاحيات ${auth.merchant.role} وتحميل مؤشرات ${auth.merchant.branchName}.`;
-        const reservationsResult = await api('/api/reservations');
-        state.reservations = reservationsResult.reservations || [];
-        renderReservations(state.reservations);
-        try { renderDebug(await publicApi('/debug')); } catch {}
-        showNotice('تم الاتصال وتحميل البيانات بنجاح.', 'success');
-      } catch (error) {
-        console.error(error);
-        showNotice(`فشل التحقق أو التحميل: ${error.message}`, 'error');
-        heroText.textContent = 'تعذر إكمال المصادقة أو الوصول إلى بيانات اللوحة.';
-        dashboardStamp.textContent = 'فشل التحميل';
-        renderAuthError(error);
-        try { renderDebug(await publicApi('/debug')); } catch {}
-      }
-    }
-
-    document.querySelectorAll('[data-screen]').forEach(btn => btn.addEventListener('click', () => setScreen(btn.dataset.screen)));
-    themeToggle.addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
-    refreshBtn.addEventListener('click', boot);
-    sendAlertBtn.addEventListener('click', async () => {
+    document.querySelectorAll('[data-ticket]').forEach(btn => btn.addEventListener('click', async () => {
+      const ticketId = btn.dataset.ticket;
       try {
         const result = await api('/api/alerts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'ops_notice', message: 'تم إرسال تنبيه تجريبي من لوحة التاجر.' })
+          body: JSON.stringify({ type: 'ticket_notice', message: `تنبيه للتذكرة ${ticketId}` })
         });
-        showNotice(`تم إرسال التنبيه بنجاح: ${result.alert.type}`, 'success');
+        showNotice(`تم إرسال تنبيه للتذكرة ${ticketId}: ${result.alert.type}`, 'success');
       } catch (error) {
-        showNotice(`فشل إرسال التنبيه: ${error.message}`, 'error');
+        showNotice(`فشل إرسال تنبيه للتذكرة ${ticketId}: ${error.message}`, 'error');
       }
-    });
-    tg?.BackButton?.onClick(() => setScreen('home'));
-    if (tg?.MainButton) { tg.MainButton.setText('فتح الحجوزات'); tg.MainButton.show(); tg.MainButton.onClick(() => setScreen('reservations')); }
-    syncTheme();
-    boot();
-  </script>
-  <script>
-async function boot() {
-  const tg = window.Telegram?.WebApp || null;
+    }));
 
-  console.log('tg exists?', !!tg);
-  console.log('initData length:', tg?.initData?.length || 0);
-  console.log('initDataUnsafe:', tg?.initDataUnsafe);
-
-  if (!tg || !tg.initData) {
-    document.getElementById('merchantName').textContent = 'فشل تمرير بيانات Telegram';
-    document.getElementById('heroText').textContent = 'افتح التطبيق من داخل البوت مباشرة.';
-    return;
+    document.querySelectorAll('[data-details]').forEach(btn => btn.addEventListener('click', () => {
+      showNotice(`التذكرة ${btn.dataset.details} مرتبطة حاليًا ببيانات حيّة من Worker.`, 'info');
+    }));
   }
 
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
+  function renderMerchant(merchant) {
+    merchantInfo.innerHTML = `
+      <article class="list-card">
+        <div class="list-head">
+          <div class="title-stack">
+            <h4>الخطوة التالية</h4>
+            <p>السابق → الحالة → الحجوزات</p>
+          </div>
+          <span class="pill pill-live">التالي</span>
+        </div>
+        <div class="mini-actions">
+          <button class="mini-btn" data-screen="settings">السابق</button>
+          <button class="mini-btn primary" data-screen="reservations">التالي</button>
+        </div>
+      </article>
+      <article class="list-card"><div class="list-head"><div class="title-stack"><h4>التاجر الموثق</h4><p>${merchant.firstName || ''} ${merchant.lastName || ''}</p></div><span class="pill pill-live">موثق</span></div></article>
+      <article class="list-card"><div class="list-head"><div class="title-stack"><h4>اسم المستخدم</h4><p>${merchant.username || 'بدون username'}</p></div><span class="pill pill-info">Telegram</span></div></article>
+      <article class="list-card"><div class="list-head"><div class="title-stack"><h4>رقم التاجر</h4><p>${merchant.telegramUserId}</p></div><span class="pill pill-info">ID</span></div></article>
+      <article class="list-card"><div class="list-head"><div class="title-stack"><h4>الفرع</h4><p>${merchant.branchName}</p></div><span class="pill pill-live">${merchant.role}</span></div></article>
+    `;
+    merchantInfo.querySelectorAll('[data-screen]').forEach(btn => btn.addEventListener('click', () => setScreen(btn.dataset.screen)));
+  }
 
-    console.log('starting auth request');
+  function renderDebug(debug) {
+    debugInfo.innerHTML = `
+      <article class="list-card">
+        <div class="list-head">
+          <div class="title-stack"><h4>تشخيص الاتصال</h4><p>يساعدك على كشف أصل الطلب الفعلي</p></div>
+          <span class="pill pill-info">debug</span>
+        </div>
+        <div class="list-meta">
+          <span class="meta-chip">Origin: ${debug.requestOrigin || 'غير متوفر'}</span>
+          <span class="meta-chip">Configured: ${debug.configuredOrigin || 'غير متوفر'}</span>
+        </div>
+        <p class="muted">${debug.userAgent || 'No user agent'}</p>
+      </article>
+    `;
+  }
 
-    const res = await fetch('https://monadim-telegram-worker.bouaffar00.workers.dev/api/auth/telegram', {
-      method: 'POST',
-      headers: {
-        Authorization: `TelegramInitData ${tg.initData}`
-      },
-      signal: controller.signal
-    });
+  function renderAuthError(error) {
+    kpiGrid.innerHTML = '<article class="glass"><div class="kpi-label">تعذر تحميل المؤشرات</div><div class="kpi-foot">تحقق من صلاحيات Telegram أو إعدادات Worker</div></article>';
+    reservationsList.innerHTML = '<div class="empty-state"><h4>تعذر تحميل الحجوزات</h4><p>تحقق من CORS أو من صحة initData المرسل من Telegram.</p></div>';
+    merchantInfo.innerHTML = `<article class="list-card"><div class="title-stack"><h4>فشل التحقق</h4><p>${error.message}</p></div></article>`;
+    statusGrid.innerHTML = `<article class="glass"><div class="kpi-top"><span class="kpi-label">الحالة</span><span>⚠️</span></div><div class="kpi-value">خطأ</div><div class="kpi-foot">${error.message}</div></article>`;
+  }
 
-    clearTimeout(timeout);
+  async function boot() {
+    hideNotice();
 
-    const text = await res.text();
-    console.log('auth status:', res.status);
-    console.log('auth body:', text);
+    console.log('tg exists?', !!tg);
+    console.log('initData length:', tg?.initData?.length || 0);
+    console.log('initDataUnsafe:', tg?.initDataUnsafe);
 
-    if (!res.ok) {
-      document.getElementById('merchantName').textContent = 'فشل التحقق من التاجر';
-      document.getElementById('heroText').textContent = text || 'Auth failed';
+    if (!tg) {
+      merchantName.textContent = 'Telegram WebApp غير متوفر';
+      heroText.textContent = 'تم فتح الصفحة خارج Telegram.';
+      dashboardStamp.textContent = 'خارج Telegram';
+      renderAuthError(new Error('Missing Telegram WebApp object'));
       return;
     }
 
-    const data = JSON.parse(text);
-    document.getElementById('merchantName').textContent =
-      `مرحبًا ${data?.merchant?.firstName || data?.merchant?.username || 'التاجر'}`;
-    document.getElementById('heroText').textContent = 'تم التحقق بنجاح.';
-  } catch (e) {
-    console.error('boot error:', e);
-    document.getElementById('merchantName').textContent = 'تعذر التحقق';
-    document.getElementById('heroText').textContent = e?.message || 'Unknown error';
-  }
-}
+    try {
+      tg.ready();
+      tg.expand();
+    } catch (e) {
+      console.warn('Telegram ready/expand warning:', e);
+    }
 
-boot();
+    if (!tg.initData) {
+      showNotice('لم تصل بيانات initData من Telegram.', 'error');
+      merchantName.textContent = 'فشل تمرير بيانات Telegram';
+      heroText.textContent = 'افتح التطبيق من داخل البوت مباشرة، ثم أعد المحاولة.';
+      dashboardStamp.textContent = 'initData مفقودة';
+      renderAuthError(new Error('Missing Telegram initData'));
+      try { renderDebug(await publicApi('/debug')); } catch {}
+      return;
+    }
+
+    try {
+      showNotice('جاري التحقق من التاجر وتحميل بيانات اللوحة...', 'info');
+
+      const auth = await api('/api/auth/telegram', { method: 'POST' });
+      state.merchant = auth.merchant;
+
+      merchantName.textContent = `مرحبًا ${auth.merchant.firstName || auth.merchant.username || 'التاجر'} · ${auth.merchant.branchName}`;
+      renderMerchant(auth.merchant);
+
+      const dashboardResult = await api('/api/dashboard');
+      state.dashboard = dashboardResult.dashboard;
+      renderKpis(state.dashboard);
+
+      dashboardStamp.textContent = 'تم التحميل بنجاح';
+      heroText.textContent = `تم التحقق من صلاحيات ${auth.merchant.role} وتحميل مؤشرات ${auth.merchant.branchName}.`;
+
+      const reservationsResult = await api('/api/reservations');
+      state.reservations = reservationsResult.reservations || [];
+      renderReservations(state.reservations);
+
+      try {
+        const debug = await publicApi('/debug');
+        state.debug = debug;
+        renderDebug(debug);
+      } catch (e) {
+        console.warn('Debug endpoint failed:', e);
+      }
+
+      showNotice('تم الاتصال وتحميل البيانات بنجاح.', 'success');
+    } catch (error) {
+      console.error('Boot failed:', error);
+      showNotice(`فشل التحقق أو التحميل: ${error.message}`, 'error');
+      merchantName.textContent = 'فشل التحقق من التاجر';
+      heroText.textContent = error.message || 'تعذر إكمال المصادقة أو الوصول إلى بيانات اللوحة.';
+      dashboardStamp.textContent = 'فشل التحميل';
+      renderAuthError(error);
+
+      try {
+        const debug = await publicApi('/debug');
+        state.debug = debug;
+        renderDebug(debug);
+      } catch (e) {
+        console.warn('Debug endpoint failed after error:', e);
+      }
+    }
+  }
+
+  document.querySelectorAll('[data-screen]').forEach(btn => btn.addEventListener('click', () => setScreen(btn.dataset.screen)));
+
+  themeToggle?.addEventListener('click', () => {
+    setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+  });
+
+  refreshBtn?.addEventListener('click', boot);
+
+  sendAlertBtn?.addEventListener('click', async () => {
+    try {
+      const result = await api('/api/alerts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'ops_notice', message: 'تم إرسال تنبيه تجريبي من لوحة التاجر.' })
+      });
+      showNotice(`تم إرسال التنبيه بنجاح: ${result.alert.type}`, 'success');
+    } catch (error) {
+      showNotice(`فشل إرسال التنبيه: ${error.message}`, 'error');
+    }
+  });
+
+  tg?.BackButton?.onClick(() => setScreen('home'));
+
+  if (tg?.MainButton) {
+    tg.MainButton.setText('فتح الحجوزات');
+    tg.MainButton.show();
+    tg.MainButton.onClick(() => setScreen('reservations'));
+  }
+
+  syncTheme();
+  boot();
 </script>
 </body>
 </html>
