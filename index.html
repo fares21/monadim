@@ -329,5 +329,58 @@
     syncTheme();
     boot();
   </script>
+  <script>
+async function boot() {
+  const tg = window.Telegram?.WebApp || null;
+
+  console.log('tg exists?', !!tg);
+  console.log('initData length:', tg?.initData?.length || 0);
+  console.log('initDataUnsafe:', tg?.initDataUnsafe);
+
+  if (!tg || !tg.initData) {
+    document.getElementById('merchantName').textContent = 'فشل تمرير بيانات Telegram';
+    document.getElementById('heroText').textContent = 'افتح التطبيق من داخل البوت مباشرة.';
+    return;
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+
+    console.log('starting auth request');
+
+    const res = await fetch('https://monadim-telegram-worker.bouaffar00.workers.dev/api/auth/telegram', {
+      method: 'POST',
+      headers: {
+        Authorization: `TelegramInitData ${tg.initData}`
+      },
+      signal: controller.signal
+    });
+
+    clearTimeout(timeout);
+
+    const text = await res.text();
+    console.log('auth status:', res.status);
+    console.log('auth body:', text);
+
+    if (!res.ok) {
+      document.getElementById('merchantName').textContent = 'فشل التحقق من التاجر';
+      document.getElementById('heroText').textContent = text || 'Auth failed';
+      return;
+    }
+
+    const data = JSON.parse(text);
+    document.getElementById('merchantName').textContent =
+      `مرحبًا ${data?.merchant?.firstName || data?.merchant?.username || 'التاجر'}`;
+    document.getElementById('heroText').textContent = 'تم التحقق بنجاح.';
+  } catch (e) {
+    console.error('boot error:', e);
+    document.getElementById('merchantName').textContent = 'تعذر التحقق';
+    document.getElementById('heroText').textContent = e?.message || 'Unknown error';
+  }
+}
+
+boot();
+</script>
 </body>
 </html>
